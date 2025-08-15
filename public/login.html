@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login – SwingTrader</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background-color: #f0f2f5;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    nav {
+      background-color: #2c3e50;
+      display: flex;
+      justify-content: center;
+      gap: 2em;
+      padding: 1em 0;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.1em;
+      transition: color 0.3s ease;
+      cursor: pointer;
+    }
+
+    nav a:hover {
+      color: #00aaff;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2em;
+    }
+
+    .login-box {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .login-box h2 {
+      margin-bottom: 1.5rem;
+      text-align: center;
+      color: #333;
+    }
+
+    .login-box label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #555;
+    }
+
+    .login-box input {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    .login-box button {
+      width: 100%;
+      padding: 0.75rem;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .login-box button:hover {
+      background: #0056b3;
+    }
+
+    footer {
+      background-color: #34495e;
+      color: white;
+      text-align: center;
+      padding: 1em 2em;
+      font-weight: 600;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="watchlist.html">Watchlist</a>
+    <a href="#">Alerts</a>
+    <a href="#">Charts</a>
+    <a href="#">Settings</a>
+  </nav>
+
+  <main>
+    <div class="login-box">
+      <h2>Login</h2>
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="Enter your email" required />
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Enter your password" required />
+      <button id="loginBtn">Login</button>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 SwingTrader.co.uk</p>
+  </footer>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAJqSF3941EKzZqO34mEibMhkMxLxe-26g",
+      authDomain: "my-first-project-910ac.firebaseapp.com",
+      projectId: "my-first-project-910ac",
+      storageBucket: "my-first-project-910ac.appspot.com",
+      messagingSenderId: "61871000397",
+      appId: "1:61871000397:web:f86e5c2bba79a8c2414504",
+      measurementId: "G-QT1DHD6CD8"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    document.getElementById("loginBtn").addEventListener("click", () => {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if (!email || !password) {
+        showError("Please enter both email and password.");
+        return;
+      }
+
+      signInWithEmailAndPassword(auth, email, password)
+        .then(() => {
+          alert("You are now logged on");
+          window.location.href = "/index.html";
+        })
+        .catch((error) => {
+          showError(error.message);
+        });
+    });
+
+    function showError(message) {
+      const errorBox = document.createElement("div");
+      errorBox.style.position = "fixed";
+      errorBox.style.top = "20px";
+      errorBox.style.left = "50%";
+      errorBox.style.transform = "translateX(-50%)";
+      errorBox.style.background = "#d32f2f";
+      errorBox.style.color = "#fff";
+      errorBox.style.padding = "1em 2em";
+      errorBox.style.borderRadius = "6px";
+      errorBox.style.boxShadow = "0 2px 6px rgba(0,0,0,0.2)";
+      errorBox.style.zIndex = "9999";
+      errorBox.style.fontWeight = "600";
+      errorBox.textContent = message;
+
+      const closeBtn = document.createElement("span");
+      closeBtn.textContent = " ×";
+      closeBtn.style.marginLeft = "1em";
+      closeBtn.style.cursor = "pointer";
+      closeBtn.style.fontWeight = "bold";
+      closeBtn.onclick = () => errorBox.remove();
+
+      errorBox.appendChild(closeBtn);
+      document.body.appendChild(errorBox);
+    }
+  </script>
+</body>
+</html>

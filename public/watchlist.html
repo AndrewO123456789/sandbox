@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Watchlist</title>
+  <link rel="stylesheet" href="css/main.css" />
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import { getAuth } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAJqSF3941EKzZqO34mEibMhkMxLxe-26g",
+      authDomain: "my-first-project-910ac.firebaseapp.com",
+      projectId: "my-first-project-910ac",
+      storageBucket: "my-first-project-910ac.appspot.com",
+      messagingSenderId: "61871000397",
+      appId: "1:61871000397:web:f86e5c2bba79a8c2414504",
+      measurementId: "G-QT1DHD6CD8"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+  </script>
+</head>
+<body>
+  <header>
+    <nav>
+      <ul id="navMenu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="watchlist.html" class="active">Watchlist</a></li>
+        <li><a href="#">Alerts</a></li>
+        <li><a href="login.html" id="loginLink">Log In</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section id="watchlist-section" class="container">
+    <h2>Watchlist</h2>
+    <p>Your tracked stocks and alerts will appear here.</p>
+  </section>
+
+  <footer>
+    <p>© 2025 SwingTrader.co.uk</p>
+  </footer>
+
+  <script type="module">
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+
+    const auth = getAuth();
+    const navMenu = document.getElementById("navMenu");
+
+    const logoutItem = document.createElement("li");
+    const logoutLink = document.createElement("a");
+    logoutLink.textContent = "Logout";
+    logoutLink.style.cursor = "pointer";
+    logoutLink.onclick = () => {
+      signOut(auth).then(() => {
+        alert("✅ Logged out");
+        window.location.href = "/index.html";
+      });
+    };
+    logoutItem.appendChild(logoutLink);
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const loginLink = document.getElementById("loginLink");
+        if (loginLink) loginLink.remove();
+        navMenu.appendChild(logoutItem);
+      } else {
+        window.location.href = "/login.html";
+      }
+    });
+  </script>
+</body>
+</html>
