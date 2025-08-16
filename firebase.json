@@ -1,11 +1,8 @@
 {
   "hosting": {
+    "site": "sandbox-56be2",
     "public": "public",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
       {
         "source": "**",
@@ -14,4 +11,5 @@
     ]
   }
 }
+
 
